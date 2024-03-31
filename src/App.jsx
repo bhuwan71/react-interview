@@ -1,4 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+
+const AnimatedDiv = ({ children, delay }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.5 } // Adjust the threshold as needed
+    );
+
+    observer.observe(ref.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`animated-div ${isVisible ? 'isVisible' : ''}`}
+      style={{ animationDelay: `${delay}s` }}
+    >
+      {children}
+    </div>
+  );
+};
 
 const VerticalScrollView = ({ start, end }) => {
   const [numbers, setNumbers] = useState([]);
@@ -10,15 +38,17 @@ const VerticalScrollView = ({ start, end }) => {
         newNumbers.push(i);
       }
       setNumbers(newNumbers);
-    }, 100);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [start, end]);
 
   return (
-    <div style={{ height: '300px', overflowY: 'auto', border: '1px solid black' }}>
+    <div style={{ height: '100px', overflowY: 'auto', border: '1px solid black' }}>
       {numbers.map((num, index) => (
-        <div key={index} className="animated-div" style={{ backgroundColor: index % 2 === 0 ? '#e8e8e8' : '#f0f0f0', padding: '5px', margin: '5px' }}>{num}</div>
+        <AnimatedDiv key={index} delay={(index + 1) * 0.5}>
+          {num}
+        </AnimatedDiv>
       ))}
     </div>
   );
@@ -34,7 +64,7 @@ const HorizontalScrollView = ({ start, end }) => {
         newNumbers.push(i);
       }
       setNumbers(newNumbers);
-    }, 100);
+    }, 3000); // Change interval to 3000 milliseconds for every 3 seconds
 
     return () => clearInterval(interval);
   }, [start, end]);
@@ -42,7 +72,9 @@ const HorizontalScrollView = ({ start, end }) => {
   return (
     <div style={{ width: 'auto', overflowX: 'auto', border: '1px solid black', display: 'flex', gap: '10px' }}>
       {numbers.map((num, index) => (
-        <div key={index} className="animated-div" style={{ backgroundColor: index % 2 === 0 ? '#cfe8fc' : '#a8d8ea', padding: '10px', borderRadius: '5px' }}>{num}</div>
+        <AnimatedDiv key={index} delay={(index + 1) * 0.5}>
+          {num}
+        </AnimatedDiv>
       ))}
     </div>
   );
