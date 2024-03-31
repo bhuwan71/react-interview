@@ -2,7 +2,7 @@
   animation-name: slideIn;
   animation-duration: 1s;
   animation-fill-mode: both;
-  height: 5vh;
+  /* height: 5vh; */
 }
 
 @keyframes slideIn {
