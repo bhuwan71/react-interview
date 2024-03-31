@@ -44,7 +44,7 @@ const VerticalScrollView = ({ start, end }) => {
   }, [start, end]);
 
   return (
-    <div style={{ height: '100px', overflowY: 'auto', border: '1px solid black' }}>
+    <div style={{ height: '200px', overflowY: 'auto', border: '1px solid black' }}>
       {numbers.map((num, index) => (
         <AnimatedDiv key={index} delay={(index + 1) * 0.5}>
           {num}
